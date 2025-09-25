@@ -17,7 +17,7 @@ const Header = () => {
         <div className="container px-3">
           {/* Brand */}
           <a
-            className="navbar-brand font-extrabold !text-[20px]"
+            className="navbar-brand font-extrabold !text-[28px] lg:w-full text-center"
             href="./index.html"
           >
             Micro Agents

@@ -449,6 +449,30 @@ const ProductsSection = () => {
         "Master any certification with AI practice questions that adapt to your knowledge gaps. Your personal AI tutor that guarantees you're ready for exam day.",
       delay: "600",
     },
+    {
+      icon: "bg-pink-gradient",
+      title: "MicroAgent LMS",
+      status: "(Coming Soon)",
+      description:
+        "Create personalized learning that adapts to each student's pace and style. Education technology that makes teaching impactful and learning more engaging.",
+      delay: "400",
+    },
+    {
+      icon: "bg-info-gradient",
+      title: "Performance Tracker",
+      status: "(Coming Soon)",
+      description:
+        "Get real-time visibility into team productivity with AI-powered analytics and insights. The smarter way to build high-performing teams without micromanaging.",
+      delay: "500",
+    },
+    {
+      icon: "bg-success-gradient",
+      title: "MicroAgent Quiz App",
+      status: "(Coming Soon)",
+      description:
+        "Master any certification with AI practice questions that adapt to your knowledge gaps. Your personal AI tutor that guarantees you're ready for exam day.",
+      delay: "600",
+    },
   ];
 
   return (
