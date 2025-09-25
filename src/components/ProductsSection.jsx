@@ -1,12 +1,10 @@
-"use client";
+
 
 import { useEffect } from "react";
 
 const ProductCard = ({ icon, title, status, description, delay }) => (
   <div
     className="col-lg-4 col-md-6 col-12"
-    data-cue="fadeIn"
-    data-cue-delay={delay}
   >
     <a href="#!">
       <div className="card border-gradient bg-transparent">
@@ -459,7 +457,6 @@ const ProductsSection = () => {
       <section
         id="product"
         className="py-xl-9 pb-lg-9 pt-5 pb-6"
-        data-cue="fadeIn"
       >
         <div className="container">
           <div className="row">

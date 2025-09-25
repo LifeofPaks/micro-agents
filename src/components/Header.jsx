@@ -1,6 +1,16 @@
 import { useState } from "react";
+import { FaUserCircle, FaSignOutAlt } from "react-icons/fa"; // user + logout icons
 
 const Header = () => {
+  const [isOpen, setIsOpen] = useState(false);
+
+  const handleToggle = () => setIsOpen((prev) => !prev);
+  const handleLogout = () => {
+    console.log("User logged out");
+    // TODO: add your logout logic here
+    setIsOpen(false);
+  };
+
   return (
     <header>
       <nav className="navbar navbar-expand-lg navbar-light w-100">
@@ -10,7 +20,7 @@ const Header = () => {
             className="navbar-brand font-extrabold !text-[20px]"
             href="./index.html"
           >
-            MicroAgent
+            Micro Agents
           </a>
 
           {/* Toggler */}
@@ -83,6 +93,27 @@ const Header = () => {
               </div>
             </div>
           </div> */}
+
+          {/* User Dropdown */}
+          <div className="ms-auto position-relative">
+            <button
+              onClick={handleToggle}
+              className="btn btn-link text-dark p-0 border-0"
+            >
+              <FaUserCircle size={28} />
+            </button>
+
+            {isOpen && (
+              <div className="dropdown-menu dropdown-menu-end show mt-2 shadow-lg rounded-lg border-0">
+                <button
+                  onClick={handleLogout}
+                  className="dropdown-item d-flex align-items-center gap-2 text-danger fw-medium"
+                >
+                  <FaSignOutAlt /> Logout
+                </button>
+              </div>
+            )}
+          </div>
         </div>
       </nav>
     </header>
