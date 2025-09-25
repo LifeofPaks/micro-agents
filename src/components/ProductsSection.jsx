@@ -483,18 +483,6 @@ const ProductsSection = () => {
         className="py-xl-9 pb-lg-9 pt-5 pb-6"
       >
         <div className="container">
-          <div className="row">
-            <div className="col-12">
-              <div className="text-center mb-xl-7 mb-5 d-flex flex-column gap-2">
-                <h2 className="mb-0">
-                  <span className="gradient-text">Our Products</span>
-                </h2>
-                <p className="mb-0 lead">
-                  Powerful AI tools to enhance your creativity and productivity
-                </p>
-              </div>
-            </div>
-          </div>
           <div className="row g-5 mb-5">
             {products.map((product, index) => (
               <ProductCard
