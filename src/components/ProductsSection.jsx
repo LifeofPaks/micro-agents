@@ -3,11 +3,9 @@
 import { useEffect } from "react";
 
 const ProductCard = ({ icon, title, status, description, delay }) => (
-  <div
-    className="col-lg-4 col-md-6 col-12"
-  >
+  <div className="col-lg-4 col-md-6 col-12">
     <a href="#!">
-      <div className="card border-gradient bg-transparent">
+      <div className="card border-gradient bg-[#1e293b]">
         <div className="card-body d-flex flex-column gap-6 p-5">
           <div className={`${icon} icon-shape icon-xl rounded-3`}>
             {icon === "bg-pink-gradient" && title.includes("CRM") && (
