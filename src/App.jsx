@@ -29,82 +29,85 @@ export const verifyUserApi = (token) =>
 
 function App() {
   const [user, setUser] = useState(null);
-  useEffect(() => {
-    const handleMessage = async () => {
-      try {
-        const response = await verifyUserApi(data.token);
+  const [isLoading, setIsLoading] = useState(true);
 
-        if (response?.data?.access_token) {
-          const verifiedToken = response.data.access_token;
+  console.log("user data:", user);
+  
 
-          localStorage.setItem("microagents-token", verifiedToken);
+useEffect(() => {
+  const initAuth = async () => {
+    try {
+      // Extract token from URL params
+      const urlParams = new URLSearchParams(window.location.search);
+      const token = urlParams.get("token");
 
-          let decoded = {};
-          try {
-            decoded = decodeJWT(verifiedToken);
-          } catch (err) {
-            console.warn("Failed to decode verified JWT:", err);
-          }
-
-          const payload = decoded.payload || {};
-
-          const user = {
-            id: decoded.sub || payload.userid || payload.user_id || payload.id,
-            email:
-              decoded.email ||
-              payload.email ||
-              payload.user_detail?.email ||
-              payload.user_email,
-            fullName:
-              decoded.fullName ||
-              payload.fullname ||
-              payload.full_name ||
-              payload.user_detail?.name,
-            role:
-              payload.role_name ||
-              payload.role ||
-              payload.userType ||
-              payload.role_details?.role_name,
-            businessId:
-              decoded.businessId ||
-              decoded.business_id ||
-              payload.business_id ||
-              payload.businessId,
-            businessDetails:
-              payload.business_details ||
-              payload.businessDetails ||
-              payload.business_details,
-            singleLoginBusinessId: payload.business_id,
-          };
-
-          setUser(user, verifiedToken);
-
-          notifySuccess("Authentication Successful");
-        } else {
-          notifyError("Verification failed: No access token received.");
-        }
-      } catch (err) {
-        console.error("User verification failed:", err);
-        if (err.response?.status === 401 || err.response?.status === 403) {
-          localStorage.removeItem("microagents-token");
-          notifyError("Invalid authentication token. Please try again.");
-        } else {
-          notifyError(
-            "Authentication verification failed."
-          );
-        }
-      } finally {
+      if (!token) {
+        notifyError("No authentication token found in URL.");
         setIsLoading(false);
+        return;
       }
-    };
 
-    window.addEventListener("message", handleMessage);
-    return () => window.removeEventListener("message", handleMessage);
-  }, [setUser]);
+      // Verify token with API
+      const response = await verifyUserApi(token);
+      const verifiedToken = response?.data?.access_token || token;
+
+      // Save token in localStorage
+      localStorage.setItem("microagents-token", verifiedToken);
+
+      // Decode JWT
+      const decoded = decodeJWT(verifiedToken);
+
+      // The actual payload is nested inside decoded.payload
+      const payload = decoded?.payload || {};
+
+      // Map user data
+      const userData = {
+        id: decoded.sub || payload.userid || payload.user_id || payload.id,
+        email:
+          decoded.email ||
+          payload.email ||
+          payload.user_detail?.email ||
+          payload.user_email,
+        fullName:
+          decoded.fullName ||
+          payload.fullname ||
+          payload.full_name ||
+          payload.user_detail?.name,
+        role:
+          payload.role_name ||
+          payload.role ||
+          payload.userType ||
+          payload.role_details?.role_name,
+        profile: payload.profile || payload.profile_details?.profile_name,
+        businessId:
+          decoded.businessId ||
+          decoded.business_id ||
+          payload.business_id ||
+          payload.businessId,
+        businessDetails:
+          payload.business_details ||
+          payload.businessDetails ||
+          payload.user_detail?.business_details ||
+          payload.user_detail?.businessDetails,
+      };
+
+      setUser(userData);
+      notifySuccess("Authentication Successful");
+    } catch (err) {
+      console.error("User verification failed:", err);
+      localStorage.removeItem("microagents-token");
+      notifyError("Authentication failed. Please try again.");
+    } finally {
+      setIsLoading(false);
+    }
+  };
+
+  initAuth();
+}, []);
 
   return (
     <div className="App" data-bs-theme="dark">
-      <Header />
+      <Header user={ user} />
       <main>
         <div className="pattern-square"></div>
         <ProductsSection />

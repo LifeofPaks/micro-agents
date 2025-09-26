@@ -5,14 +5,21 @@ import MenuItem from "@mui/material/MenuItem";
 import ListItemIcon from "@mui/material/ListItemIcon";
 import { FaSignOutAlt } from "react-icons/fa";
 
-const Header = () => {
+const Header = ({user}) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const open = Boolean(anchorEl);
 
-  // Example user info
-  const firstName = "Patrick";
-  const lastName = "Erwing";
-  const initials = `${firstName[0]}${lastName[0]}`;
+const getInitials = (fullName) => {
+  if (!fullName) return "";
+
+  const names = fullName.trim().split(" ");
+  const firstInitial = names[0]?.[0] || "";
+  const lastInitial = names.length > 1 ? names[names.length - 1][0] : "";
+
+  return (firstInitial + lastInitial).toUpperCase();
+};
+  
+  const initials = getInitials(user?.fullName);
 
   const handleClick = (event) => {
     setAnchorEl(event.currentTarget);
