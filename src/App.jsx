@@ -3,6 +3,8 @@ import Footer from "./components/Footer";
 import Header from "./components/Header";
 import ProductsSection from "./components/ProductsSection";
 import ScrollToTop from "./components/ScrollToTop";
+import { notifyError, notifySuccess } from "./utils/toastify";
+import axios from "axios";
 
 const axiosInstance = axios.create({
   baseURL: import.meta.env.VITE_BASEURL,
@@ -13,6 +15,17 @@ const axiosInstance = axios.create({
 
 export const verifyUserApi = (token) =>
   axiosInstance.post("/auth/verify-user", { token });
+
+  const decodeJWT = (token) => {
+    try {
+      const parts = token.split(".");
+      if (parts.length !== 3) throw new Error("Invalid JWT token");
+      return JSON.parse(atob(parts[1]));
+    } catch (error) {
+      console.error("Error decoding JWT:", error);
+      return null;
+    }
+  };
 
 function App() {
   const [user, setUser] = useState(null);
@@ -77,7 +90,7 @@ function App() {
           notifyError("Invalid authentication token. Please try again.");
         } else {
           notifyError(
-            "Authentication verification failed. Redirecting to dashboard..."
+            "Authentication verification failed."
           );
         }
       } finally {
